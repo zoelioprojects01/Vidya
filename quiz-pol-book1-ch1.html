@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Cold War Era Quiz</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f0f8ff;
+      padding: 20px;
+    }
+    h1 {
+      color: #1e3a8a;
+    }
+    .question {
+      margin-bottom: 20px;
+      padding: 10px 20px;
+      background: #ffffff;
+      border-radius: 10px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .question h3 {
+      margin: 0 0 10px;
+    }
+    .options label {
+      display: block;
+      margin-bottom: 5px;
+    }
+    #timer {
+      font-weight: bold;
+      color: #dc2626;
+      font-size: 18px;
+      margin-bottom: 15px;
+    }
+    button {
+      padding: 10px 20px;
+      background: #2563eb;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+      margin: 10px 5px;
+    }
+    #result {
+      font-weight: bold;
+      color: green;
+      font-size: 20px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Quiz: The Cold War Era (Political Science)</h1>
+  <div id="timer">Time left: 10:00</div>
+
+  <form id="quizForm">
+    <!-- Questions inserted by JavaScript -->
+  </form>
+
+  <button type="button" onclick="submitQuiz()">Submit</button>
+  <button type="button" onclick="history.back()">Back</button>
+
+  <div id="result"></div>
+
+  <script>
+    const questions = [
+      ["What was the primary cause of the Cold War?", ["Territorial expansion", "Religious differences", "Ideological conflict between the USA and USSR", "Economic rivalry"], "c"],
+      ["The Cold War was fought between which two main blocs?", ["NATO and SEATO", "USA and USSR", "USA and Germany", "USSR and China"], "b"],
+      ["What does NATO stand for?", ["North America Trade Organization", "New Asia Treaty Organisation", "North Atlantic Treaty Organization", "Neutral Allied Treaty Organization"], "c"],
+      ["Which event is considered the closest the world came to nuclear war during the Cold War?", ["Vietnam War", "Cuban Missile Crisis", "Korean War", "Berlin Blockade"], "b"],
+      ["What was the USSR's response to NATO?", ["Formation of the United Nations", "Withdrawal from Europe", "Warsaw Pact", "COMECON"], "c"],
+      ["What policy did the US follow to prevent the spread of communism?", ["Detente", "Containment", "Disarmament", "Neutrality"], "b"],
+      ["The Berlin Wall was built in:", ["1961", "1950", "1945", "1980"], "a"],
+      ["Which of these countries was part of the Eastern Bloc?", ["France", "UK", "Poland", "West Germany"], "c"],
+      ["Which leader introduced reforms like Glasnost and Perestroika?", ["Stalin", "Lenin", "Khrushchev", "Gorbachev"], "d"],
+      ["Which one of these was a Non-Aligned Movement founder?", ["Jawaharlal Nehru", "Kennedy", "Reagan", "Churchill"], "a"],
+      ["What was the key aim of NAM?", ["Promote capitalism", "Spread communism", "Stay neutral during the Cold War", "Support only the USSR"], "c"],
+      ["The Cold War led to a race in:", ["Arms and Space", "Automobiles", "Sports", "Diplomacy"], "a"],
+      ["The policy of détente means:", ["War preparations", "Isolation", "Relaxation of tensions", "Total neutrality"], "c"],
+      ["Which conference formalised the division of Germany after WWII?", ["Berlin Conference", "Geneva Conference", "Vienna Conference", "Yalta Conference"], "d"],
+      ["The Iron Curtain symbolised:", ["Military alliance", "Division between East and West Europe", "Naval power", "Trade barrier"], "b"],
+      ["Which of these was a proxy war during the Cold War?", ["World War I", "World War II", "Vietnam War", "Gulf War"], "c"],
+      ["What triggered the Cuban Missile Crisis?", ["US sending troops to Cuba", "Cuba joining NATO", "Cuba attacking US", "USSR placing nuclear missiles in Cuba"], "d"],
+      ["What did the term 'bipolar world' refer to during the Cold War?", ["Two superpowers dominating global politics", "Neutrality", "Multiple nations sharing power", "Collapse of Europe"], "a"],
+      ["When did the Cold War formally end?", ["1989", "1991", "1985", "2000"], "b"],
+      ["Which country was NOT part of NAM?", ["India", "USA", "Egypt", "Indonesia"], "b"],
+      ["The first summit of NAM was held in:", ["Belgrade", "Bandung", "Geneva", "New Delhi"], "a"],
+      ["Which US President was during Cuban Missile Crisis?", ["Nixon", "Bush", "Truman", "John F. Kennedy"], "d"],
+      ["Cold War policies caused:", ["World unity", "European unification", "Arms race and proxy wars", "Only peaceful competition"], "c"],
+      ["USSR stood for:", ["United States Social Republic", "Union of Socialist States Republic", "Union of Soviet Socialist Republics", "United Soviet Republics"], "c"],
+      ["Non-alignment is:", ["Aligning with both powers", "Isolation", "Military expansion", "Independence in foreign policy"], "d"],
+      ["Berlin Blockade was imposed by:", ["USSR", "NATO", "USA", "France"], "a"],
+      ["SEATO and CENTO were alliances led by:", ["USSR", "USA", "India", "France"], "b"],
+      ["Which country disintegrated in 1991 ending the Cold War?", ["Yugoslavia", "USSR", "Czechoslovakia", "Poland"], "b"],
+      ["Who among the following is not a part of the P5 (UN Security Council)?", ["India", "France", "USA", "China"], "a"],
+      ["The Cold War led to creation of military alliances like:", ["UN", "NAM", "ILO", "NATO & Warsaw Pact"], "d"]
+    ];
+
+    function loadQuiz() {
+      const form = document.getElementById("quizForm");
+      questions.forEach((q, i) => {
+        const div = document.createElement("div");
+        div.className = "question";
+        div.innerHTML = `<h3>${i + 1}. ${q[0]}</h3>`;
+        const options = ["a", "b", "c", "d"];
+        q[1].forEach((opt, j) => {
+          div.innerHTML += `<label><input type="radio" name="q${i + 1}" value="${options[j]}"> ${opt}</label>`;
+        });
+        form.appendChild(div);
+      });
+    }
+
+    function submitQuiz() {
+      let score = 0;
+      questions.forEach((q, i) => {
+        const selected = document.querySelector(`input[name="q${i + 1}"]:checked`);
+        if (selected && selected.value === q[2]) {
+          score++;
+        }
+      });
+      document.getElementById("result").innerText = `You scored ${score} out of ${questions.length}`;
+      clearInterval(timerInterval);
+    }
+
+    let timeLeft = 600; // 10 minutes
+    const timerDisplay = document.getElementById("timer");
+    const timerInterval = setInterval(() => {
+      if (timeLeft <= 0) {
+        clearInterval(timerInterval);
+        submitQuiz();
+        timerDisplay.innerText = "Time's up!";
+      } else {
+        let mins = Math.floor(timeLeft / 60);
+        let secs = timeLeft % 60;
+        timerDisplay.innerText = `Time left: ${mins}:${secs < 10 ? '0' : ''}${secs}`;
+        timeLeft--;
+      }
+    }, 1000);
+
+    window.onload = loadQuiz;
+  </script>
+</body>
+</html>

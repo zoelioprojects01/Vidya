@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Quiz: One-Party Dominance in Indian Politics</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f0f8ff;
+      padding: 20px;
+    }
+    h1 {
+      color: #1e3a8a;
+    }
+    .question {
+      margin-bottom: 20px;
+      padding: 10px 20px;
+      background: #ffffff;
+      border-radius: 10px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .question h3 {
+      margin: 0 0 10px;
+    }
+    .options label {
+      display: block;
+      margin-bottom: 5px;
+    }
+    #timer {
+      font-weight: bold;
+      color: #dc2626;
+      font-size: 18px;
+      margin-bottom: 15px;
+    }
+    button {
+      padding: 10px 20px;
+      background: #2563eb;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+      margin: 10px 5px;
+    }
+    #result {
+      font-weight: bold;
+      color: green;
+      font-size: 20px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Quiz: One-Party Dominance in Indian Politics</h1>
+  <div id="timer">Time left: 10:00</div>
+
+  <form id="quizForm"></form>
+
+  <button type="button" onclick="submitQuiz()">Submit</button>
+  <button type="button" onclick="history.back()">Back</button>
+
+  <div id="result"></div>
+
+  <script>
+    const questions = [
+      ["What does the ‘One-Party Dominance’ in Indian politics refer to?", ["Military rule", "Dominance of Congress after independence", "Rule by monarchy", "Dictatorship"], "b"],
+      ["Which political party dominated Indian politics after independence?", ["BJP", "Indian National Congress", "CPI", "BSP"], "b"],
+      ["The first general elections in India were held in:", ["1949", "1951", "1951–52", "1950"], "c"],
+      ["Which was the only party to get majority in the first general elections?", ["Communist Party", "Congress", "Hindu Mahasabha", "Socialist Party"], "b"],
+      ["What percentage of seats did Congress win in the first Lok Sabha?", ["45%", "Around 75%", "60%", "50%"], "b"],
+      ["The first general election was considered a landmark because:", ["It was the largest democratic exercise at the time", "Only elites voted", "India had no Constitution", "Elections were rigged"], "a"],
+      ["Which leader became the first elected Prime Minister of India?", ["Sardar Patel", "Rajendra Prasad", "Jawaharlal Nehru", "Subhas Chandra Bose"], "c"],
+      ["How many seats were in the first Lok Sabha?", ["450", "489", "500", "512"], "b"],
+      ["Which body conducted the first general elections?", ["President of India", "Election Commission", "Planning Commission", "Supreme Court"], "b"],
+      ["Who was the first Chief Election Commissioner of India?", ["Sukumar Sen", "T.N. Seshan", "M.S. Gill", "Nehru"], "a"],
+      ["The Congress dominance lasted approximately until:", ["1962", "1965", "1977", "1984"], "c"],
+      ["Which ideology did Congress primarily follow post-independence?", ["Communism", "Socialism and secularism", "Monarchy", "Fundamentalism"], "b"],
+      ["Which opposition party emerged strong in early years?", ["BJP", "AAP", "Communist Party of India (CPI)", "Trinamool Congress"], "c"],
+      ["The main reason behind Congress dominance was:", ["Foreign support", "Legacy of freedom struggle", "Army power", "Religious politics"], "b"],
+      ["Congress was considered a 'rainbow-like coalition' because:", ["It was colorful", "It represented diverse groups and ideologies", "It was religious", "It changed constantly"], "b"],
+      ["Socialist Party was formed in:", ["1945", "1946", "1948", "1950"], "c"],
+      ["What was the main issue for Socialist Party?", ["Religious freedom", "Social justice and equality", "Industrial development", "Globalization"], "b"],
+      ["Bharatiya Jana Sangh (BJS) was founded in:", ["1955", "1951", "1953", "1949"], "b"],
+      ["Who founded the Bharatiya Jana Sangh?", ["L.K. Advani", "Nehru", "Syama Prasad Mookerjee", "Deen Dayal Upadhyay"], "c"],
+      ["Jana Sangh’s ideology was based on:", ["Marxism", "Globalism", "Cultural nationalism (Hindutva)", "Federalism"], "c"],
+      ["Which party emerged as a strong peasant party in South India?", ["Swatantra Party", "DMK", "BJS", "Congress"], "a"],
+      ["CPI was inspired by:", ["USA", "Gandhi", "Soviet Union", "Britain"], "c"],
+      ["The first non-Congress state government was formed in which year?", ["1965", "1959", "1957", "1967"], "c"],
+      ["Which state saw the first non-Congress government?", ["Gujarat", "Punjab", "Kerala", "West Bengal"], "c"],
+      ["Who led the first Communist government in Kerala?", ["E.M.S. Namboodiripad", "Jyoti Basu", "P. Sundarayya", "M. Karunanidhi"], "a"],
+      ["Which article was used to dismiss Kerala government in 1959?", ["Article 370", "Article 356", "Article 19", "Article 324"], "b"],
+      ["What was a common criticism of one-party dominance?", ["Too much democracy", "Suppression of opposition voices", "Lack of elections", "Unstable government"], "b"],
+      ["The Congress system was termed as a system of:", ["Coalition politics", "Presidential rule", "Dominant-party system", "Communist system"], "c"],
+      ["Who coined the term 'Congress System'?", ["M.N. Roy", "Rajni Kothari", "Nehru", "Ambedkar"], "b"],
+      ["Which of the following was not an opposition party during the era of Congress dominance?", ["Socialist Party", "CPI", "Bharatiya Jana Sangh", "DMK (in 1952 elections)"], "d"]
+    ];
+
+    function loadQuiz() {
+      const form = document.getElementById("quizForm");
+      questions.forEach((q, i) => {
+        const div = document.createElement("div");
+        div.className = "question";
+        div.innerHTML = `<h3>${i + 1}. ${q[0]}</h3>`;
+        const options = ["a", "b", "c", "d"];
+        q[1].forEach((opt, j) => {
+          div.innerHTML += `<label><input type="radio" name="q${i + 1}" value="${options[j]}"> ${opt}</label>`;
+        });
+        form.appendChild(div);
+      });
+    }
+
+    function submitQuiz() {
+      let score = 0;
+      questions.forEach((q, i) => {
+        const selected = document.querySelector(`input[name="q${i + 1}"]:checked`);
+        if (selected && selected.value === q[2]) {
+          score++;
+        }
+      });
+      document.getElementById("result").innerText = `You scored ${score} out of ${questions.length}`;
+      clearInterval(timerInterval);
+    }
+
+    let timeLeft = 600; // 10 minutes
+    const timerDisplay = document.getElementById("timer");
+    const timerInterval = setInterval(() => {
+      if (timeLeft <= 0) {
+        clearInterval(timerInterval);
+        submitQuiz();
+        timerDisplay.innerText = "Time's up!";
+      } else {
+        let mins = Math.floor(timeLeft / 60);
+        let secs = timeLeft % 60;
+        timerDisplay.innerText = `Time left: ${mins}:${secs < 10 ? '0' : ''}${secs}`;
+        timeLeft--;
+      }
+    }, 1000);
+
+    window.onload = loadQuiz;
+  </script>
+</body>
+</html>

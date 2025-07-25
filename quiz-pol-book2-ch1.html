@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Quiz: India After Independence</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f0f8ff;
+      padding: 20px;
+    }
+    h1 {
+      color: #1e3a8a;
+    }
+    .question {
+      margin-bottom: 20px;
+      padding: 10px 20px;
+      background: #ffffff;
+      border-radius: 10px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .question h3 {
+      margin: 0 0 10px;
+    }
+    .options label {
+      display: block;
+      margin-bottom: 5px;
+    }
+    #timer {
+      font-weight: bold;
+      color: #dc2626;
+      font-size: 18px;
+      margin-bottom: 15px;
+    }
+    button {
+      padding: 10px 20px;
+      background: #2563eb;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+      margin: 10px 5px;
+    }
+    #result {
+      font-weight: bold;
+      color: green;
+      font-size: 20px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Quiz: India After Independence</h1>
+  <div id="timer">Time left: 10:00</div>
+
+  <form id="quizForm"></form>
+
+  <button type="button" onclick="submitQuiz()">Submit</button>
+  <button type="button" onclick="history.back()">Back</button>
+
+  <div id="result"></div>
+
+  <script>
+    const questions = [
+      ["What was the major challenge faced by India after independence?", ["Military expansion", "Nation building and unity", "Globalization", "Industrialization"], "b"],
+      ["Who was the first Prime Minister of independent India?", ["Mahatma Gandhi", "Sardar Patel", "Jawaharlal Nehru", "Rajendra Prasad"], "c"],
+      ["Which two major leaders played crucial roles in the integration of princely states?", ["Nehru and Rajagopalachari", "Sardar Patel and V.P. Menon", "Gandhi and Nehru", "Patel and Ambedkar"], "b"],
+      ["The term ‘instrument of accession’ refers to:", ["Document of foreign alliance", "Agreement signed by princely states to join India", "Arms deal", "British ordinance"], "b"],
+      ["How many princely states were there at the time of independence?", ["200", "462", "565", "600"], "c"],
+      ["Who was known as the ‘Iron Man of India’?", ["Rajendra Prasad", "Sardar Vallabhbhai Patel", "B.R. Ambedkar", "Lala Lajpat Rai"], "b"],
+      ["Junagadh was a princely state located in:", ["Maharashtra", "Gujarat", "Punjab", "Rajasthan"], "b"],
+      ["The ruler of Hyderabad was known as:", ["Nizam", "Nawab", "Raja", "Maharana"], "a"],
+      ["Operation Polo was related to:", ["Partition", "Annexation of Hyderabad", "Kashmir conflict", "Goa liberation"], "b"],
+      ["Which state was created on linguistic basis in 1953?", ["Gujarat", "Andhra Pradesh", "Tamil Nadu", "Punjab"], "b"],
+      ["Who led the movement for a separate Andhra state?", ["C. Rajagopalachari", "Potti Sriramulu", "Nehru", "MGR"], "b"],
+      ["The States Reorganisation Commission was formed in:", ["1948", "1953", "1956", "1960"], "b"],
+      ["The States Reorganisation Act was passed in:", ["1955", "1956", "1952", "1958"], "b"],
+      ["Which commission recommended the reorganisation of states on a linguistic basis?", ["Mandal Commission", "Planning Commission", "States Reorganisation Commission", "Election Commission"], "c"],
+      ["What was the main demand of linguistic states movement?", ["Religious recognition", "States based on mother tongue", "Reservations", "Autonomy"], "b"],
+      ["The state of Punjab was reorganized in:", ["1960", "1964", "1966", "1970"], "c"],
+      ["Who led the integration of Kashmir with India?", ["Nehru", "Patel", "Sheikh Abdullah", "Hari Singh"], "c"],
+      ["The special status of Jammu and Kashmir was guaranteed by:", ["Article 356", "Article 370", "Article 14", "Article 32"], "b"],
+      ["The Indian Constitution came into effect on:", ["15 August 1947", "2 October 1949", "26 January 1950", "26 November 1949"], "c"],
+      ["Partition of India was based on:", ["Region", "Religion", "Language", "Economy"], "b"],
+      ["Which two nations emerged after partition?", ["India and Bangladesh", "India and Pakistan", "Pakistan and Afghanistan", "India and Sri Lanka"], "b"],
+      ["Who was the leader of the Muslim League during partition?", ["Liaquat Ali Khan", "Muhammad Ali Jinnah", "Zia-ul-Haq", "Nawaz Sharif"], "b"],
+      ["The major communal violence during partition occurred in:", ["Goa", "Assam", "Punjab and Bengal", "Rajasthan"], "c"],
+      ["The refugee crisis of 1947 was a result of:", ["Partition of India", "Drought", "Riots in Gujarat", "British exploitation"], "a"],
+      ["The main goal of Indian foreign policy after independence was:", ["Expansionism", "Non-alignment", "Military alliances", "Isolation"], "b"],
+      ["Which area was annexed by India in 1961 from Portuguese control?", ["Daman", "Diu", "Dadra and Nagar Haveli", "Goa"], "d"],
+      ["Which Article of the Constitution protects linguistic minorities?", ["Article 19", "Article 14", "Article 29 and 30", "Article 370"], "c"],
+      ["Who was India’s first Home Minister?", ["Nehru", "Sardar Vallabhbhai Patel", "B.R. Ambedkar", "Rajendra Prasad"], "b"],
+      ["Which state was created in 1960 after Bombay state was bifurcated?", ["Goa", "Karnataka", "Maharashtra and Gujarat", "Kerala and Tamil Nadu"], "c"],
+      ["The formation of linguistic states helped in:", ["Economic growth", "Strengthening federalism and national unity", "Religious peace", "Decline of democracy"], "b"]
+    ];
+
+    function loadQuiz() {
+      const form = document.getElementById("quizForm");
+      questions.forEach((q, i) => {
+        const div = document.createElement("div");
+        div.className = "question";
+        div.innerHTML = `<h3>${i + 1}. ${q[0]}</h3>`;
+        const options = ["a", "b", "c", "d"];
+        q[1].forEach((opt, j) => {
+          div.innerHTML += `<label><input type="radio" name="q${i + 1}" value="${options[j]}"> ${opt}</label>`;
+        });
+        form.appendChild(div);
+      });
+    }
+
+    function submitQuiz() {
+      let score = 0;
+      questions.forEach((q, i) => {
+        const selected = document.querySelector(`input[name="q${i + 1}"]:checked`);
+        if (selected && selected.value === q[2]) {
+          score++;
+        }
+      });
+      document.getElementById("result").innerText = `You scored ${score} out of ${questions.length}`;
+      clearInterval(timerInterval);
+    }
+
+    let timeLeft = 600; // 10 minutes
+    const timerDisplay = document.getElementById("timer");
+    const timerInterval = setInterval(() => {
+      if (timeLeft <= 0) {
+        clearInterval(timerInterval);
+        submitQuiz();
+        timerDisplay.innerText = "Time's up!";
+      } else {
+        let mins = Math.floor(timeLeft / 60);
+        let secs = timeLeft % 60;
+        timerDisplay.innerText = `Time left: ${mins}:${secs < 10 ? '0' : ''}${secs}`;
+        timeLeft--;
+      }
+    }, 1000);
+
+    window.onload = loadQuiz;
+  </script>
+</body>
+</html>

@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Quiz: Disintegration of the Soviet Union</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f0f8ff;
+      padding: 20px;
+    }
+    h1 {
+      color: #1e3a8a;
+    }
+    .question {
+      margin-bottom: 20px;
+      padding: 10px 20px;
+      background: #ffffff;
+      border-radius: 10px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .question h3 {
+      margin: 0 0 10px;
+    }
+    .options label {
+      display: block;
+      margin-bottom: 5px;
+    }
+    #timer {
+      font-weight: bold;
+      color: #dc2626;
+      font-size: 18px;
+      margin-bottom: 15px;
+    }
+    button {
+      padding: 10px 20px;
+      background: #2563eb;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+      margin: 10px 5px;
+    }
+    #result {
+      font-weight: bold;
+      color: green;
+      font-size: 20px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Quiz: Disintegration of the Soviet Union</h1>
+  <div id="timer">Time left: 10:00</div>
+
+  <form id="quizForm"></form>
+
+  <button type="button" onclick="submitQuiz()">Submit</button>
+  <button type="button" onclick="history.back()">Back</button>
+
+  <div id="result"></div>
+
+  <script>
+    const questions = [
+      ["When did the Soviet Union disintegrate?", ["1985", "1989", "1991", "1995"], "c"],
+      ["Who was the last President of the USSR?", ["Stalin", "Lenin", "Mikhail Gorbachev", "Khrushchev"], "c"],
+      ["Glasnost means:", ["Economic reform", "Openness and transparency", "Military strengthening", "Censorship"], "b"],
+      ["Perestroika refers to:", ["Openness", "Economic restructuring", "Political censorship", "Arms control"], "b"],
+      ["Which country was not a part of the Soviet Union?", ["Ukraine", "Belarus", "Poland", "Kazakhstan"], "c"],
+      ["The fall of the Berlin Wall took place in:", ["1990", "1989", "1991", "1985"], "b"],
+      ["What replaced the USSR after its disintegration?", ["NATO", "Commonwealth of Independent States (CIS)", "NAM", "SEATO"], "b"],
+      ["Which ideology declined after the fall of USSR?", ["Capitalism", "Communism", "Fascism", "Socialism"], "b"],
+      ["Which one was NOT a reason for the USSR’s collapse?", ["Economic stagnation", "Political reforms", "Western invasion", "Nationalist movements"], "c"],
+      ["The Russian economy transitioned into:", ["Centralized economy", "Capitalist market economy", "Closed economy", "Military-based economy"], "b"],
+      ["Who introduced Perestroika and Glasnost?", ["Boris Yeltsin", "Mikhail Gorbachev", "Brezhnev", "Lenin"], "b"],
+      ["After USSR collapsed, Russia was led by:", ["Khrushchev", "Boris Yeltsin", "Putin", "Gorbachev"], "b"],
+      ["The term ‘shock therapy’ refers to:", ["Medical treatment", "Sudden political coup", "Sudden shift to capitalism", "Diplomatic strategy"], "c"],
+      ["Which sector was worst affected by shock therapy?", ["Information Technology", "Oil and gas", "Agriculture and public welfare", "Telecommunication"], "c"],
+      ["Russia’s new constitution was adopted in:", ["1990", "1991", "1993", "1994"], "c"],
+      ["Oligarchs in Russia are:", ["Government servants", "Wealthy businessmen with political influence", "Soldiers", "Foreign diplomats"], "b"],
+      ["What happened to most state-owned industries after 1991 in Russia?", ["Grew stronger", "Were privatized", "Remained the same", "Nationalized again"], "b"],
+      ["What was one major consequence of USSR’s disintegration?", ["World War III", "Unipolar world led by USA", "Formation of NATO", "Return of monarchy"], "b"],
+      ["The Commonwealth of Independent States (CIS) was formed by:", ["12 former Soviet republics", "EU", "NATO", "Warsaw Pact"], "a"],
+      ["The end of bipolarity gave rise to:", ["Bipolar world", "Unipolar and multipolar trends", "Cold war II", "No change"], "b"],
+      ["Who succeeded Gorbachev in Russia?", ["Vladimir Lenin", "Nikita Khrushchev", "Boris Yeltsin", "Leon Trotsky"], "c"],
+      ["Shock therapy led to:", ["Price control", "Rapid price rise and inflation", "Industrial expansion", "Strong central planning"], "b"],
+      ["Which republic emerged as the largest power after USSR?", ["Ukraine", "Russia", "Georgia", "Belarus"], "b"],
+      ["What was the role of the World Bank and IMF in shock therapy?", ["Passive observers", "Suggested reforms and gave financial aid", "Opposed reforms", "Nationalised industries"], "b"],
+      ["Why did shock therapy fail in Russia?", ["Too slow", "Sudden transition without safeguards", "Public support", "Balanced planning"], "b"],
+      ["How many republics initially made up the USSR?", ["10", "15", "5", "12"], "b"],
+      ["Which treaty led to the formation of CIS?", ["Warsaw Pact", "Minsk Agreement (1991)", "Geneva Convention", "Helsinki Accords"], "b"],
+      ["What was Russia’s stance on global politics after 1991?", ["Strong isolationism", "Assertive foreign policy and nationalism", "Joined EU", "Surrendered sovereignty"], "b"],
+      ["The Russian Parliament is known as:", ["Kremlin", "Duma", "Congress", "Supreme Soviet"], "b"],
+      ["What challenge did Central Asian republics face post-USSR?", ["Economic boom", "Political instability and authoritarianism", "Peaceful transition", "Strong democracies"], "b"]
+    ];
+
+    function loadQuiz() {
+      const form = document.getElementById("quizForm");
+      questions.forEach((q, i) => {
+        const div = document.createElement("div");
+        div.className = "question";
+        div.innerHTML = `<h3>${i + 1}. ${q[0]}</h3>`;
+        const options = ["a", "b", "c", "d"];
+        q[1].forEach((opt, j) => {
+          div.innerHTML += `<label><input type="radio" name="q${i + 1}" value="${options[j]}"> ${opt}</label>`;
+        });
+        form.appendChild(div);
+      });
+    }
+
+    function submitQuiz() {
+      let score = 0;
+      questions.forEach((q, i) => {
+        const selected = document.querySelector(`input[name="q${i + 1}"]:checked`);
+        if (selected && selected.value === q[2]) {
+          score++;
+        }
+      });
+      document.getElementById("result").innerText = `You scored ${score} out of ${questions.length}`;
+      clearInterval(timerInterval);
+    }
+
+    let timeLeft = 600; // 10 minutes
+    const timerDisplay = document.getElementById("timer");
+    const timerInterval = setInterval(() => {
+      if (timeLeft <= 0) {
+        clearInterval(timerInterval);
+        submitQuiz();
+        timerDisplay.innerText = "Time's up!";
+      } else {
+        let mins = Math.floor(timeLeft / 60);
+        let secs = timeLeft % 60;
+        timerDisplay.innerText = `Time left: ${mins}:${secs < 10 ? '0' : ''}${secs}`;
+        timeLeft--;
+      }
+    }, 1000);
+
+    window.onload = loadQuiz;
+  </script>
+</body>
+</html>
